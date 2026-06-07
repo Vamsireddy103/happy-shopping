@@ -45,7 +45,6 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 15px;
     }
 
     img {
@@ -75,7 +74,6 @@
     }
 
   </style>
-
 </head>
 
 <body>
@@ -95,8 +93,9 @@
 
 <script>
 
-// ✅ YOUR CORRECT IDS
+// ✅ ✅ FINAL COMPLETE IDS LIST
 const ids = [
+  "chappidi-21",
   "reddy0be-21",
   "vam001-21",
   "vam12305-21",
@@ -106,9 +105,8 @@ const ids = [
   "vamsi19970e-21"
 ];
 
-// ✅ ROTATION SYSTEM (VERY IMPORTANT)
+// ✅ ROTATION SYSTEM
 function getAffiliate() {
-
   let counter = localStorage.getItem("aff_counter");
 
   if (!counter) {
@@ -127,28 +125,28 @@ function getAffiliate() {
 }
 
 // ✅ EXTRACT ASIN
-function getASIN(url){
+function getASIN(url) {
   let match = url.match(/\/dp\/(\w+)/) || url.match(/product\/(\w+)/);
   return match ? match[1] : null;
 }
 
-// ✅ EXTRACT TITLE
-function getTitle(url){
-  try{
-    return new URL(url).pathname.split("/")[1].replace(/-/g," ");
+// ✅ GET TITLE
+function getTitle(url) {
+  try {
+    return new URL(url).pathname.split("/")[1].replace(/-/g, " ");
   } catch {
     return "Product";
   }
 }
 
 // ✅ MAIN FUNCTION
-function generate(){
+function generate() {
 
   let url = document.getElementById("urlInput").value.trim();
   let asin = getASIN(url);
 
-  if(!asin){
-    alert("Please enter a valid Amazon product link");
+  if (!asin) {
+    alert("Please enter a valid Amazon link");
     return;
   }
 
@@ -161,27 +159,21 @@ function generate(){
   let title = getTitle(url);
 
   let container = document.getElementById("output");
-
-  // ✅ CLEAR OLD CONTENT
   container.innerHTML = "";
 
-  // ✅ IMAGE
   let image = document.createElement("img");
   image.src = img;
 
-  // ✅ TITLE
   let titleEl = document.createElement("div");
   titleEl.className = "title";
   titleEl.innerText = title;
 
-  // ✅ BUTTON
   let button = document.createElement("a");
   button.href = finalLink;
   button.target = "_blank";
   button.className = "buy-btn";
   button.innerText = "✅ View Deal on Amazon";
 
-  // ✅ ADD TO PAGE
   container.appendChild(image);
   container.appendChild(titleEl);
   container.appendChild(button);
