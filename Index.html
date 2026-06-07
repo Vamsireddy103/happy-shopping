@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Happy Shopping</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f3f4f6;
+      text-align: center;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    input {
+      width: 95%;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    button {
+      width: 98%;
+      padding: 12px;
+      margin-top: 10px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    img {
+      width: 120px;
+      margin-top: 20px;
+    }
+
+    .title {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .buy-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: green;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="header">🛍️ Happy Shopping</div>
+
+<div class="container">
+
+  <h2>Get the Best Deal Instantly</h2>
+
+  <input id="urlInput" placeholder="Paste Amazon link here">
+  <button onclick="generate()">Get Best Deal</button>
+
+  <div id="output"></div>
+
+</div>
+
+<script>
+
+const ids = ["vam001-21","vam002-21","vam003-21"];
+
+function getAffiliate(){
+  let stored = localStorage.getItem("aff");
+  if(stored) return stored;
+
+  let id = ids[Math.floor(Math.random()*ids.length)];
+  localStorage.setItem("aff", id);
+  return id;
+}
+
+function getASIN(url){
+  let m = url.match(/\/dp\/(\w+)/);
+  return m ? m[1] : null;
+}
+
+function getTitle(url){
+  try{
+    return new URL(url).pathname.split("/")[1].replace(/-/g," ");
+  } catch {
+    return "Product";
+  }
+}
+
+function generate(){
+
+  let url = document.getElementById("urlInput").value;
+  let asin = getASIN(url);
+
+  if(!asin){
+    alert("Invalid link");
+    return;
+  }
+
+  let tag = getAffiliate();
+  let link = "https://www.amazon.in/dp/" + asin + "?tag=" + tag;
+  let img = "https://images-na.ssl-images-amazon.com/images/P/" + asin + ".01._SX300_.jpg";
+  let title = getTitle(url);
+
+  let container = document.getElementById("output");
+
+  // ✅ CLEAR OLD CONTENT
+  container.innerHTML = "";
+
+  // ✅ CREATE IMAGE
+  let image = document.createElement("img");
+  image.src = img;
+
+  // ✅ TITLE
+  let titleEl = document.createElement("div");
+  titleEl.className = "title";
+  titleEl.innerText = title;
+
+  // ✅ BUTTON (100% CLICKABLE)
+  let button = document.createElement("a");
+  button.href = link;
+  button.target = "_blank";
+  button.className = "buy-btn";
+  button.innerText = "✅ View Deal on Amazon";
+
+  // ✅ APPEND ALL
+  container.appendChild(image);
+  container.appendChild(titleEl);
+  container.appendChild(button);
+}
+
+</script>
+
+</body>
+</html>
