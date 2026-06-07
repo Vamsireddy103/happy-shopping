@@ -63,9 +63,7 @@
       border-radius: 6px;
       font-weight: bold;
     }
-
   </style>
-
 </head>
 
 <body>
@@ -85,22 +83,44 @@
 
 <script>
 
-const ids = ["vam001-21","vam002-21","vam003-21"];
+// ✅ ALL YOUR IDS
+const ids = [
+  "reddy0be-21",
+  "vam001-21",
+  "vam12305-21",
+  "vamsi0107-21",
+  "vamsi0365-21",
+  "vamsi0d9-21",
+  "vamsi19970e-21"
+];
 
+// ✅ ROTATING LOGIC
 function getAffiliate(){
-  let stored = localStorage.getItem("aff");
-  if(stored) return stored;
 
-  let id = ids[Math.floor(Math.random()*ids.length)];
-  localStorage.setItem("aff", id);
+  let counter = localStorage.getItem("aff_counter");
+
+  if (!counter) {
+    counter = 0;
+  } else {
+    counter = parseInt(counter);
+  }
+
+  let id = ids[counter % ids.length];
+
+  counter++;
+
+  localStorage.setItem("aff_counter", counter);
+
   return id;
 }
 
+// ✅ ASIN
 function getASIN(url){
   let m = url.match(/\/dp\/(\w+)/);
   return m ? m[1] : null;
 }
 
+// ✅ TITLE
 function getTitle(url){
   try{
     return new URL(url).pathname.split("/")[1].replace(/-/g," ");
@@ -109,6 +129,7 @@ function getTitle(url){
   }
 }
 
+// ✅ MAIN
 function generate(){
 
   let url = document.getElementById("urlInput").value;
@@ -120,32 +141,27 @@ function generate(){
   }
 
   let tag = getAffiliate();
+
   let link = "https://www.amazon.in/dp/" + asin + "?tag=" + tag;
   let img = "https://images-na.ssl-images-amazon.com/images/P/" + asin + ".01._SX300_.jpg";
   let title = getTitle(url);
 
   let container = document.getElementById("output");
-
-  // ✅ CLEAR OLD CONTENT
   container.innerHTML = "";
 
-  // ✅ CREATE IMAGE
   let image = document.createElement("img");
   image.src = img;
 
-  // ✅ TITLE
   let titleEl = document.createElement("div");
   titleEl.className = "title";
   titleEl.innerText = title;
 
-  // ✅ BUTTON (100% CLICKABLE)
   let button = document.createElement("a");
   button.href = link;
   button.target = "_blank";
   button.className = "buy-btn";
   button.innerText = "✅ View Deal on Amazon";
 
-  // ✅ APPEND ALL
   container.appendChild(image);
   container.appendChild(titleEl);
   container.appendChild(button);
