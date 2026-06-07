@@ -25,12 +25,15 @@
       background: white;
       padding: 25px;
       border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
 
     input {
       width: 95%;
       padding: 12px;
       margin-top: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
 
     button {
@@ -40,7 +43,9 @@
       background: #2563eb;
       color: white;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 15px;
     }
 
     img {
@@ -51,19 +56,26 @@
     .title {
       font-weight: bold;
       margin-top: 10px;
+      font-size: 14px;
     }
 
     .buy-btn {
       display: inline-block;
       margin-top: 20px;
       padding: 12px 20px;
-      background: green;
+      background: #16a34a;
       color: white;
       text-decoration: none;
       border-radius: 6px;
       font-weight: bold;
     }
+
+    .buy-btn:hover {
+      background: #15803d;
+    }
+
   </style>
+
 </head>
 
 <body>
@@ -83,7 +95,7 @@
 
 <script>
 
-// ✅ ALL YOUR IDS
+// ✅ YOUR CORRECT IDS
 const ids = [
   "reddy0be-21",
   "vam001-21",
@@ -94,8 +106,8 @@ const ids = [
   "vamsi19970e-21"
 ];
 
-// ✅ ROTATING LOGIC
-function getAffiliate(){
+// ✅ ROTATION SYSTEM (VERY IMPORTANT)
+function getAffiliate() {
 
   let counter = localStorage.getItem("aff_counter");
 
@@ -114,13 +126,13 @@ function getAffiliate(){
   return id;
 }
 
-// ✅ ASIN
+// ✅ EXTRACT ASIN
 function getASIN(url){
-  let m = url.match(/\/dp\/(\w+)/);
-  return m ? m[1] : null;
+  let match = url.match(/\/dp\/(\w+)/) || url.match(/product\/(\w+)/);
+  return match ? match[1] : null;
 }
 
-// ✅ TITLE
+// ✅ EXTRACT TITLE
 function getTitle(url){
   try{
     return new URL(url).pathname.split("/")[1].replace(/-/g," ");
@@ -129,39 +141,47 @@ function getTitle(url){
   }
 }
 
-// ✅ MAIN
+// ✅ MAIN FUNCTION
 function generate(){
 
-  let url = document.getElementById("urlInput").value;
+  let url = document.getElementById("urlInput").value.trim();
   let asin = getASIN(url);
 
   if(!asin){
-    alert("Invalid link");
+    alert("Please enter a valid Amazon product link");
     return;
   }
 
   let tag = getAffiliate();
 
-  let link = "https://www.amazon.in/dp/" + asin + "?tag=" + tag;
+  let finalLink = "https://www.amazon.in/dp/" + asin + "?tag=" + tag;
+
   let img = "https://images-na.ssl-images-amazon.com/images/P/" + asin + ".01._SX300_.jpg";
+
   let title = getTitle(url);
 
   let container = document.getElementById("output");
+
+  // ✅ CLEAR OLD CONTENT
   container.innerHTML = "";
 
+  // ✅ IMAGE
   let image = document.createElement("img");
   image.src = img;
 
+  // ✅ TITLE
   let titleEl = document.createElement("div");
   titleEl.className = "title";
   titleEl.innerText = title;
 
+  // ✅ BUTTON
   let button = document.createElement("a");
-  button.href = link;
+  button.href = finalLink;
   button.target = "_blank";
   button.className = "buy-btn";
   button.innerText = "✅ View Deal on Amazon";
 
+  // ✅ ADD TO PAGE
   container.appendChild(image);
   container.appendChild(titleEl);
   container.appendChild(button);
