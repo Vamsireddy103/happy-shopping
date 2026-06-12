@@ -45,6 +45,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      font-size: 15px;
     }
 
     img {
@@ -59,18 +60,36 @@
     }
 
     .buy-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 20px;
-      background: #16a34a;
+      display: block;
+      width: 80%;
+      margin: 12px auto;
+      padding: 12px;
       color: white;
       text-decoration: none;
       border-radius: 6px;
       font-weight: bold;
     }
 
-    .buy-btn:hover {
+    .amazon {
+      background: #16a34a;
+    }
+
+    .amazon:hover {
       background: #15803d;
+    }
+
+    .store {
+      background: #f59e0b;
+    }
+
+    .store:hover {
+      background: #d97706;
+    }
+
+    .disclaimer {
+      font-size: 12px;
+      color: gray;
+      margin-top: 15px;
     }
 
   </style>
@@ -89,11 +108,16 @@
 
   <div id="output"></div>
 
+  <!-- ✅ Affiliate disclosure -->
+  <p class="disclaimer">
+    We may earn a commission on purchases (no extra cost to you)
+  </p>
+
 </div>
 
 <script>
 
-// ✅ ✅ FINAL COMPLETE IDS LIST
+// ✅ YOUR COMPLETE IDS
 const ids = [
   "chappidi-21",
   "reddy0be-21",
@@ -146,37 +170,47 @@ function generate() {
   let asin = getASIN(url);
 
   if (!asin) {
-    alert("Please enter a valid Amazon link");
+    alert("Please enter a valid Amazon product link");
     return;
   }
 
   let tag = getAffiliate();
 
   let finalLink = "https://www.amazon.in/dp/" + asin + "?tag=" + tag;
-
   let img = "https://images-na.ssl-images-amazon.com/images/P/" + asin + ".01._SX300_.jpg";
-
   let title = getTitle(url);
 
   let container = document.getElementById("output");
   container.innerHTML = "";
 
+  // ✅ IMAGE
   let image = document.createElement("img");
   image.src = img;
 
+  // ✅ TITLE
   let titleEl = document.createElement("div");
   titleEl.className = "title";
   titleEl.innerText = title;
 
-  let button = document.createElement("a");
-  button.href = finalLink;
-  button.target = "_blank";
-  button.className = "buy-btn";
-  button.innerText = "✅ View Deal on Amazon";
+  // ✅ AMAZON BUTTON (UPDATED TEXT)
+  let amazonBtn = document.createElement("a");
+  amazonBtn.href = finalLink;
+  amazonBtn.target = "_blank";
+  amazonBtn.className = "buy-btn amazon";
+  amazonBtn.innerText = "🔥 Check Best Price on Amazon";
 
+  // ✅ STOREFRONT BUTTON
+  let storeBtn = document.createElement("a");
+  storeBtn.href = "https://www.amazon.in/shop/vam12305";
+  storeBtn.target = "_blank";
+  storeBtn.className = "buy-btn store";
+  storeBtn.innerText = "🛍️ View More Deals";
+
+  // ✅ APPEND
   container.appendChild(image);
   container.appendChild(titleEl);
-  container.appendChild(button);
+  container.appendChild(amazonBtn);
+  container.appendChild(storeBtn);
 }
 
 </script>
